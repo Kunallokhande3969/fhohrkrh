@@ -53,8 +53,8 @@ app.use("/resume", require("./routes/resumeRoutes"));
 app.use("/employe", require("./routes/employeRouter"));
 
 // ===== Error Handling =====
-const ErrorHandler = require("./utiles/ErrorHandler"); // स्पेलिंग सुधारी
-const { generatedErrors } = require("./middlewares/errors"); // स्पेलिंग सुधारी
+const ErrorHandler = require("./utiles/ErorrHandler"); // स्पेलिंग सुधारी
+const { generatedErorrs } = require("./middlewares/erorrs"); // स्पेलिंग सुधारी
 
 // Catch-all route
 app.all("*", (req, res, next) => {
@@ -62,7 +62,7 @@ app.all("*", (req, res, next) => {
 });
 
 // Error Middleware
-app.use(generatedErrors);
+app.use(generatedErorrs);
 
 // ===== Start Server =====
 const PORT = process.env.PORT || 8080;
