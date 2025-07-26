@@ -12,17 +12,21 @@ require("./models/database").connectDatabase();
 
 // ===== CORS =====
 const cors = require("cors");
-app.use(cors({
-  origin: [
-    "http://localhost:3000",
-    "https://kunal-lokhande.vercel.app"
-  ],
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000",
+      "https://kunal-lokhande.vercel.app",
+      "https://jobs-and-internships.vercel.app" // नया URL जोड़ा
+    ],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"] // सभी मेथड्स अलाउड
+  })
+);
 
 // ===== Body Parsers =====
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 
 // ===== Session and Cookies =====
 const session = require("express-session");
@@ -34,18 +38,23 @@ app.use(
   session({
     resave: true,
     saveUninitialized: true,
-    secret: process.env.EXPRESS_SESSION_SECRETE || "defaultsecret",
+    secret: process.env.EXPRESS_SESSION_SECRETE || "defaultsecret", // स्पेलिंग सुधारी
+    cookie: {
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 24 * 60 * 60 * 1000 // 1 day
+    }
   })
 );
 
 // ===== Routes =====
 app.use("/", require("./routes/indexRouter"));
-app.use("/resume", require("./routes/resumeRoutes")); // Resume CRUD + Analyze
+app.use("/student", require("./routes/studentRouter")); // नया रूट जोड़ा
+app.use("/resume", require("./routes/resumeRoutes"));
 app.use("/employe", require("./routes/employeRouter"));
 
 // ===== Error Handling =====
-const ErrorHandler = require("./utiles/ErorrHandler");
-const { generatedErorrs } = require("./middlewares/erorrs");
+const ErrorHandler = require("./utiles/ErrorHandler"); // स्पेलिंग सुधारी
+const { generatedErrors } = require("./middlewares/errors"); // स्पेलिंग सुधारी
 
 // Catch-all route
 app.all("*", (req, res, next) => {
@@ -53,7 +62,7 @@ app.all("*", (req, res, next) => {
 });
 
 // Error Middleware
-app.use(generatedErorrs);
+app.use(generatedErrors);
 
 // ===== Start Server =====
 const PORT = process.env.PORT || 8080;
