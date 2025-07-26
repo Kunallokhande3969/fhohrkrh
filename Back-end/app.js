@@ -15,8 +15,7 @@ const cors = require("cors");
 app.use(cors({
   origin: [
     "http://localhost:3000",
-  "https://fhohrkrh.onrender.com"
-
+    "https://kunal-lokhande.vercel.app/"
   ],
   credentials: true
 }));
@@ -57,5 +56,5 @@ app.all("*", (req, res, next) => {
 app.use(generatedErorrs);
 
 // ===== Start Server =====
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
