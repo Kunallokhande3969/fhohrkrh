@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Create an Axios instance
 const instance = axios.create({
-  baseURL: process.env.REACT_APP_API_BASE_URL , // Use environment variable
+  baseURL: process.env.REACT_APP_API_BASE_URL || "https://kunal-lokhande.vercel.app/", // Use environment variable
   withCredentials: true, // Include credentials (cookies) in requests
   headers: {
     "Content-Type": "application/json", // Default content type
